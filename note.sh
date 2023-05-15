@@ -37,15 +37,18 @@ fi
 _NOTE_LINK_NAME="${NOTE_LINK_NAME:-note}"
 _CURRENT_NOTE_LINK="${HOME}/${_NOTE_LINK_NAME}"
 
-if [[ -f ${_CURRENT_NOTE_LINK} ]]; then
-	rm "${_CURRENT_NOTE_LINK}"
-fi
+_CURRENT_LINK_POINT_TO=$(readlink -f "${_CURRENT_NOTE_LINK}" | xargs basename)
 
-echo "Setting link: ${_CURRENT_NOTE_LINK} -> ${_DAY_FILE_PATH}"
-ln -s "${_DAY_FILE_PATH}" "${_CURRENT_NOTE_LINK}"
-echo "Set properly: "
-ls -l "${HOME}" | grep -w "${_NOTE_LINK_NAME}"
-echo ""
+if [[ "${_CURRENT_DATE_FORMATTED}" != "${_CURRENT_LINK_POINT_TO}" ]]; then
+  if [[ -f ${_CURRENT_NOTE_LINK} ]]; then
+  	rm "${_CURRENT_NOTE_LINK}"
+  fi
+  echo "Setting link: ${_CURRENT_NOTE_LINK} -> ${_DAY_FILE_PATH}"
+  ln -s "${_DAY_FILE_PATH}" "${_CURRENT_NOTE_LINK}"
+  echo "Set properly: "
+  ls -l "${HOME}" | grep -w "${_NOTE_LINK_NAME}"
+  echo ""
+fi
 
 _ADDITIONAL_SCRIPT_PATH="${ADDITIONAL_SCRIPT_PATH:-${_CURRENT_PATH}/additional_commands.sh}"
 if [[ -f ${_ADDITIONAL_SCRIPT_PATH} ]]; then
