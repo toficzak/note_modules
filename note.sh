@@ -14,9 +14,9 @@
 
 set -e
 
-_CURRENT_PATH=$(pwd)
+_REPO_PATH="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 _DAYS_FOLDER_NAME="${NM_DAYS_FOLDER_NAME:-days}"
-_DAYS_FOLDER_PATH="${_CURRENT_PATH}/${_DAYS_FOLDER_NAME}"
+_DAYS_FOLDER_PATH="${_REPO_PATH}/${_DAYS_FOLDER_NAME}"
 
 if [[ ! -d ${_DAYS_FOLDER_PATH} ]]; then
 	echo "Creating folder ${_DAYS_FOLDER_NAME} on path ${_DAYS_FOLDER_PATH}'..."
@@ -30,7 +30,7 @@ _CURRENT_DATE=$(date)
 _CURRENT_DATE_FORMATTED=$(date +%Y%m%d)
 _DAY_FILE_PATH="${_DAYS_FOLDER_PATH}/${_CURRENT_DATE_FORMATTED}"
 _TEMPLATE_DAY_FILE_NAME="${NM_TEMPLATE_DAY_FILE_NAME:-.template_day}"
-_TEMPLATE_DAY_FILE_PATH="${_CURRENT_PATH}/${_TEMPLATE_DAY_FILE_NAME}"
+_TEMPLATE_DAY_FILE_PATH="${_REPO_PATH}/${_TEMPLATE_DAY_FILE_NAME}"
 
 if [[ ! -f ${_DAY_FILE_PATH} ]]; then
 	echo "Creating file for day: ${_CURRENT_DATE}"
@@ -60,7 +60,7 @@ if [[ "${_CURRENT_DATE_FORMATTED}" != "${_CURRENT_LINK_POINT_TO}" ]]; then
   echo ""
 fi
 
-_ADDITIONAL_SCRIPT_PATH="${NM_ADDITIONAL_SCRIPT_PATH:-${_CURRENT_PATH}/additional_commands.sh}"
+_ADDITIONAL_SCRIPT_PATH="${NM_ADDITIONAL_SCRIPT_PATH:-${_REPO_PATH}/additional_commands.sh}"
 if [[ -f ${_ADDITIONAL_SCRIPT_PATH} ]]; then
 	echo "Performing additional operations from: ${_ADDITIONAL_SCRIPT_PATH}"
 	. ${_ADDITIONAL_SCRIPT_PATH}
